@@ -68,7 +68,11 @@ public class KeyHandler implements KeyListener{
             rightPressed = true;
         }
         if(code == KeyEvent.VK_E) {
-            // SOON TO BE IMPLEMENTED
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.inventoryState;
+            } else if(gp.gameState == gp.inventoryState) {
+                gp.gameState = gp.playState;
+            }
         }
         if(code == KeyEvent.VK_F3) {
             if(debugMode == false) {
@@ -77,7 +81,7 @@ public class KeyHandler implements KeyListener{
                 debugMode = false;
             }
             else {
-                System.out.println("Debug mode failed");
+                System.out.println("[DEBUG] Debug mode failed!");
             }
         }
         if(code == KeyEvent.VK_ESCAPE) {
@@ -87,7 +91,7 @@ public class KeyHandler implements KeyListener{
                 gp.gameState = gp.playState;
             }
         }
-
+    
     }
 
     @Override

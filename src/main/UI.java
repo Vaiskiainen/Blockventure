@@ -3,6 +3,9 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import java.awt.Font;
 
@@ -21,6 +24,7 @@ public class UI {
     
     public UI(GamePanel gp) {
         this.gp = gp;
+        loadInventoryImage();
 
         arial_40 = new Font("Arial", Font.PLAIN, 40);
     }
@@ -52,6 +56,9 @@ public class UI {
 
         if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
+        }
+        if(gp.gameState == gp.inventoryState) {
+            drawInventory();
         }
 
     }
@@ -116,5 +123,28 @@ public class UI {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - length / 2;
         return x;
+    }
+    public void loadInventoryImage() {
+        // Load the inventory image
+        setup("testinv");
+    }
+    public void drawInventory() {
+        // Draw inventory screen
+        g2.drawImage(inventoryImage, 150, 70, 450, 450, null);
+    }
+
+
+    public BufferedImage setup(String imageName) {
+        UtilityTool uTool = new UtilityTool();
+
+        try {
+
+            inventoryImage = ImageIO.read(getClass().getResourceAsStream("/res/guis/" + imageName + ".png"));
+            System.out.println("Loaded image: " + imageName);
+
+        }catch(IOException e) {
+            e.printStackTrace();
+}
+        return inventoryImage;
     }
 }

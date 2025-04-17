@@ -63,6 +63,7 @@ public class TileManager {
             tile[tileID].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName + ".png"));
             tile[tileID].image = uTool.scaleImage(tile[tileID].image, gp.tileSize, gp.tileSize);
             tile[tileID].collision = collision;
+            System.out.println("Loaded image: " + imageName);
 
         }catch(IOException e) {
             e.printStackTrace();
@@ -94,6 +95,7 @@ public class TileManager {
                     row++;
                 }
             }
+            System.out.println("Loaded map: " + filePath);
             br.close();
 
         }catch(Exception e) {

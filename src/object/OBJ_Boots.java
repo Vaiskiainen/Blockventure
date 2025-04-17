@@ -19,6 +19,7 @@ public class OBJ_Boots extends SuperObject {
 
             image = ImageIO.read(getClass().getResourceAsStream("/res/objects/boots_of_swiftness.png"));
             uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            System.out.println("Loaded image: Boots of Swiftness");
 
         }catch (IOException e) {
             e.printStackTrace();
