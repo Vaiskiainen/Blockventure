@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
 
 public class UI {
 
@@ -16,8 +18,9 @@ public class UI {
     public BufferedImage inventoryImage;
     int messageCounter = 0;
     public int commandNum = 0;
+    public int pauseCommandNum = 0;
 
-    Font arial_40;
+    Font Jersey;
 
     Graphics2D g2;
     GamePanel gp;
@@ -26,7 +29,14 @@ public class UI {
         this.gp = gp;
         loadInventoryImage();
 
-        arial_40 = new Font("Arial", Font.PLAIN, 40);
+        
+        try {
+            InputStream is = getClass().getResourceAsStream("/res/fonts/Jersey.ttf");
+            Jersey = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 40F);
+            is = getClass().getResourceAsStream("/res/fonts/arial.ttf");
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showMessage(String text) {
@@ -34,7 +44,7 @@ public class UI {
         messageOn = true;
     }
     public void drawMessage(String text, int x, int y) {
-        g2.setFont(arial_40);
+        g2.setFont(Jersey);
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
     }
@@ -72,7 +82,7 @@ public class UI {
         g2.setColor(new Color(70, 120, 80));
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+        g2.setFont(Jersey.deriveFont(Font.BOLD, 96F));
         String text = "Blockventure";
         int x = getXforCenteredText(text);
         int y = gp.tileSize * 3;
@@ -117,11 +127,54 @@ public class UI {
     
     public void drawPauseScreen() {
         
+        g2.setFont(Jersey.deriveFont(Font.BOLD, 96F));
         String text = "PAUSED";
         int x = getXforCenteredText(text);
-        int y = gp.screenHeight / 2 - 30;
+        int y = gp.screenHeight / 2 - 50;
 
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 5, y + 5);
+
+        g2.setColor(Color.white);
         g2.drawString(text, x, y);
+
+        text = "RESUME";
+        g2.setFont(Jersey.deriveFont(Font.BOLD, 60F));
+        x = getXforCenteredText(text);
+        y = gp.screenHeight / 2 + 50;
+
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+
+
+        if(pauseCommandNum == 0) {
+            g2.setColor(Color.black);
+            g2.drawString(">", x - gp.tileSize, y);
+
+            g2.setColor(Color.white);
+            g2.drawString(">", x - gp.tileSize + 4, y);
+        }
+
+        text = "TITLE SCREEN";
+        g2.setFont(Jersey.deriveFont(Font.BOLD, 60F));
+        x = getXforCenteredText(text);
+        y = gp.screenHeight / 2 + 125;
+
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+        if(pauseCommandNum == 1) {
+            g2.setColor(Color.black);
+            g2.drawString(">", x - gp.tileSize, y);
+
+            g2.setColor(Color.white);
+            g2.drawString(">", x - gp.tileSize + 4, y);
+        }
 
     }
     public int getXforCenteredText(String text) {

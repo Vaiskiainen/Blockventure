@@ -48,10 +48,33 @@ public class KeyHandler implements KeyListener{
                     System.exit(0);
                 }
             }
+            }else if(gp.gameState == gp.pauseState)
+            {
+                if(code == KeyEvent.VK_UP) {
+                    gp.ui.pauseCommandNum--;
+                    if(gp.ui.pauseCommandNum < 0) {
+                        gp.ui.pauseCommandNum = 1;
+                    }
+                }
+                if(code == KeyEvent.VK_DOWN) {
+                    gp.ui.pauseCommandNum++;
+                    if(gp.ui.pauseCommandNum > 1) {
+                        gp.ui.pauseCommandNum = 0;
+                    }
+                }
+                if(code == KeyEvent.VK_ENTER) {
+                    if(gp.ui.pauseCommandNum == 0) {
+                        gp.gameState = gp.playState;
+                    }
+                    if(gp.ui.pauseCommandNum == 1) {
+                        gp.gameState = gp.titleState;
+                    }
+                }
+            }
+
+
+
         
-
-
-        }
         if(code == KeyEvent.VK_W) {
             upPressed = true;
         }
@@ -84,10 +107,19 @@ public class KeyHandler implements KeyListener{
                 System.out.println("[DEBUG] Debug mode failed!");
             }
         }
-        if(code == KeyEvent.VK_ESCAPE) {
+        if(code == KeyEvent.VK_P) {
             if (gp.gameState == gp.playState) {
                 gp.gameState = gp.pauseState;
             } else if (gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
+        }
+        if(code == KeyEvent.VK_ESCAPE) {
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else if(gp.gameState == gp.titleState) {
+                System.exit(0);
+            } else {
                 gp.gameState = gp.playState;
             }
         }
