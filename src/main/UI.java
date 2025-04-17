@@ -12,6 +12,7 @@ public class UI {
     public String message = "";
     public BufferedImage inventoryImage;
     int messageCounter = 0;
+    public int commandNum = 0;
 
     Font arial_40;
 
@@ -36,14 +37,72 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 40F));
         g2.setColor(Color.white);
 
+        // TITLE STATE
+        if(gp.gameState == gp.titleState) {
+            drawTitleScreen();
+        }
+
+        // PLAY STATE
+
         if(gp.gameState == gp.playState) {
 
-
         }
+
+        // PAUSE STATE
+
         if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
         }
+
     }
+    public void drawTitleScreen() {
+
+        g2.setColor(new Color(70, 120, 80));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+        String text = "Blockventure";
+        int x = getXforCenteredText(text);
+        int y = gp.tileSize * 3;
+
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 5, y + 5);
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+
+        x = gp.screenWidth / 2 - (gp.tileSize * 2) / 2;
+        y += gp.tileSize * 2;
+        g2.drawImage(gp.player.down1, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40F));
+
+        text = "NEW GAME";
+        x = getXforCenteredText(text);
+        y += gp.tileSize * 3.5;
+        g2.drawString(text, x, y);
+        if(commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
+        text = "LOAD GAME";
+        x = getXforCenteredText(text);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if(commandNum == 1) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
+        text = "QUIT";
+        x = getXforCenteredText(text);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if(commandNum == 2) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+    }
+
+    
     public void drawPauseScreen() {
         
         String text = "PAUSED";
@@ -58,9 +117,4 @@ public class UI {
         int x = gp.screenWidth / 2 - length / 2;
         return x;
     }
-
-<<<<<<< HEAD
 }
-=======
-} 
->>>>>>> ff59f8a301c2c4b2b780f9a269700f5c0505d6a2

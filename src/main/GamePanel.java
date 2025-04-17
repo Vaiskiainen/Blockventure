@@ -132,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable {
         // TITLE SCREEN
 
         if(gameState == titleState) {
-            // do nothing
+            ui.draw(g2);
         }
         else {
             // TILES
