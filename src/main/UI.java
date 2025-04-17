@@ -59,4 +59,8 @@ public class UI {
         return x;
     }
 
+<<<<<<< HEAD
 }
+=======
+} 
+>>>>>>> ff59f8a301c2c4b2b780f9a269700f5c0505d6a2
