@@ -33,6 +33,11 @@ public class UI {
         message = text;
         messageOn = true;
     }
+    public void drawMessage(String text, int x, int y) {
+        g2.setFont(arial_40);
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+    }
 
     public void draw(Graphics2D g2) {
 
