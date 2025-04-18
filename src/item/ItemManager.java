@@ -31,7 +31,7 @@ public class ItemManager {
         invList.clear();
         invList.add(1);
         invList.add(0);
-        invList.add(0);
+        invList.add(1);
         invList.add(1);
         invList.add(0);
         invList.add(1);
