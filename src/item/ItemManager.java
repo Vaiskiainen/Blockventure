@@ -24,9 +24,9 @@ public class ItemManager {
         getItemImage();
     }
     public void getItemImage() {
-
+        setup(1, "key");
 }
-public void setup(int itemID, String imageName, boolean collision) {
+public void setup(int itemID, String imageName) {
         UtilityTool uTool = new UtilityTool();
 
         try {

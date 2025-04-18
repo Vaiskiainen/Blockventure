@@ -152,10 +152,10 @@ public class UI {
 
         if(pauseCommandNum == 0) {
             g2.setColor(Color.black);
-            g2.drawString(">", x - gp.tileSize, y);
+            g2.drawString(">", x - gp.tileSize + 4, y + 4);
 
             g2.setColor(Color.white);
-            g2.drawString(">", x - gp.tileSize + 4, y);
+            g2.drawString(">", x - gp.tileSize, y);
         }
 
         text = "TITLE SCREEN";
@@ -170,10 +170,10 @@ public class UI {
         g2.drawString(text, x, y);
         if(pauseCommandNum == 1) {
             g2.setColor(Color.black);
-            g2.drawString(">", x - gp.tileSize, y);
+            g2.drawString(">", x - gp.tileSize +4, y +4);
 
             g2.setColor(Color.white);
-            g2.drawString(">", x - gp.tileSize + 4, y);
+            g2.drawString(">", x - gp.tileSize, y);
         }
 
     }
