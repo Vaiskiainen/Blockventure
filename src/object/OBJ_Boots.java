@@ -23,6 +23,7 @@ public class OBJ_Boots extends SuperObject {
 
         }catch (IOException e) {
             e.printStackTrace();
+            System.exit(-99);
         }
             
     }

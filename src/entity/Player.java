@@ -10,22 +10,29 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UI;
 import main.UtilityTool;
 
-public class Player extends Entity{
+public class Player extends Entity {
     
     GamePanel gp;
     KeyHandler keyH;
+    public UI ui;
     
     public final int screenX;
     public final int screenY;
     public ArrayList<String> inventory = new ArrayList<>();
     public final int inventorySize = 24;
+    public String holding;
+    public boolean enterPressed = false;
+    public int health = 3;
+    public int maxHealth = 6;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp); // Explicitly call the constructor of the Entity class
         this.gp = gp;
         this.keyH = keyH;
+        this.ui = gp.ui;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -45,25 +52,31 @@ public class Player extends Entity{
         setItems();
 
     }
+
     public void setDefaultValues() {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
     }
-        public void setItems() {
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
-            inventory.add("Key");
+    
+    public void setItems() {
+
+        inventory.add("Key");
+        inventory.add("Boots");
+        inventory.add("Berry");
+        inventory.add("Knife");
+        inventory.add("Pickaxe");
+        inventory.add("Paper_Roll");
+        inventory.add("Sword");
+        inventory.add("Carrots");
+        inventory.add("Axe");
+        inventory.add("Potion");
+        inventory.add("Water_Bottle");
         
     }
+
+    
     public void getPlayerImage() {
 
         up1 = setup("boy_up_1");
@@ -75,6 +88,7 @@ public class Player extends Entity{
         right1 = setup("boy_right_1");
         right2 = setup("boy_right_2");
     } 
+    
     public BufferedImage setup(String imageName) {
 
         UtilityTool uTool = new UtilityTool();
@@ -85,78 +99,78 @@ public class Player extends Entity{
             image = ImageIO.read(getClass().getResourceAsStream("/res/player/" + imageName + ".png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
 
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-99);
         }
         return image;
     }
+    
     public void update() {
-
-        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
-            
-
-        if (keyH.upPressed == true) {
-            direction = "up";
-        }
-        else if(keyH.downPressed == true) {
-            direction = "down";
-        }
-        else if(keyH.leftPressed == true) {
-            direction = "left";
-        }
-        else if(keyH.rightPressed == true) {
-            direction = "right";
-        }
-        // CHECK TILE COLLISION
-
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
-
-        // CHECK OBJECT COLLISION
-        int objIndex = gp.cChecker.checkObject(this, true);
-        pickUpObject(objIndex);
-
-        // IF COLLISION IS FALSE, PLAYER CAN MOVE
-        if(collisionOn == false) {
-            switch(direction) {
-                case "up":
-                    worldY -= speed;
-                    break;
-                case "down":
-                    worldY += speed;
-                    break;
-                case "left":
-                    worldX -= speed;
-                    break;
-                case "right":
-                    worldX += speed;
-                    break;
+        if (ui.holding == "Boots") {
+            speed = 6;
+        } else {
+            speed = 4;
         }
 
-        spriteCounter++;
-        if(spriteCounter > 12) {
-            if(spriteNum == 1) {
-                spriteNum = 2;
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+
+            if (keyH.upPressed) {
+                direction = "up";
+            } else if (keyH.downPressed) {
+                direction = "down";
+            } else if (keyH.leftPressed) {
+                direction = "left";
+            } else if (keyH.rightPressed) {
+                direction = "right";
             }
-            else if(spriteNum == 2) {
-                spriteNum = 1;
+
+            // CHECK TILE COLLISION
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+
+            // CHECK OBJECT COLLISION
+            int objIndex = gp.cChecker.checkObject(this, true);
+            pickUpObject(objIndex);
+
+            // IF COLLISION IS FALSE, PLAYER CAN MOVE
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+
+                spriteCounter++;
+                if (spriteCounter > 12) {
+                    spriteNum = (spriteNum == 1) ? 2 : 1;
+                    spriteCounter = 0;
+                }
             }
-            spriteCounter = 0;
+
+            // CHECK IF PLAYER IS OUT OF BOUNDS
+            if (worldX < 0 || worldY < 0  || worldX > gp.worldWidth - gp.tileSize || worldY > gp.worldHeight - gp.tileSize) {
+                health = 0;
+            }
         }
     }
-
-}
-}
 
     public void pickUpObject(int i) {
 
-        if(i != 999) {
+        if (i != 999) {
 
-            
         }
-        
-
     }
+
     public void draw(Graphics2D g2) {
 
         // g2.setColor(Color.white);
@@ -164,45 +178,76 @@ public class Player extends Entity{
 
         BufferedImage image = null;
 
-        switch(direction) {
-                
+        switch (direction) {
             case "up":
-
-                if(spriteNum == 1) {
+                if (spriteNum == 1) {
                     image = up1;
                 }
-                if(spriteNum == 2) {
+                if (spriteNum == 2) {
                     image = up2;
                 }
                 break;
             
             case "down":
-                if(spriteNum == 1) {
+                if (spriteNum == 1) {
                     image = down1;
-              }
-               if(spriteNum == 2) {
+                }
+                if (spriteNum == 2) {
                     image = down2;
-               }
+                }
                 break;
             
             case "left":
-            if(spriteNum == 1) {
-                image = left1;
-            }
-            if(spriteNum == 2) {
-                image = left2;
-            }
+                if (spriteNum == 1) {
+                    image = left1;
+                }
+                if (spriteNum == 2) {
+                    image = left2;
+                }
                 break;
             
             case "right":
-            if(spriteNum == 1) {
-                image = right1;
-            }
-            if(spriteNum == 2) {
-                image = right2;
-            }
+                if (spriteNum == 1) {
+                    image = right1;
+                }
+                if (spriteNum == 2) {
+                    image = right2;
+                }
                 break;
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+    public void interactWithHoldingItem() {
+        switch (ui.holding) {
+        case "Berry": 
+            if (health < maxHealth) {
+                health += 1;
+                ui.holding = "none";
+                inventory.remove("Berry");
+                break;
+            }else {
+                break;
+            }
+        case "Carrots": 
+            if (health < maxHealth) {
+                health += 2;
+                ui.holding = "none";
+                inventory.remove("Carrots");
+                break;
+            }else {
+                break;
+            }
+        case "Potion": 
+            if (health < maxHealth) {
+                health = maxHealth;
+                ui.holding = "none";
+                inventory.remove("Potion");
+                break;
+            }else {
+                break;
+            }
+        }
+            
+        
     }
 }

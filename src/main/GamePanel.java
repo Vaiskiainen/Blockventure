@@ -2,8 +2,15 @@ package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -19,16 +26,22 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 16;
+    public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
+    Font Jersey = new Font("Jersey", Font.PLAIN, 40);
 
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
+
+    int screenWidth2 = screenWidth;
+    int screenHeight2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
 
     // FPS
     int FPS = 60;
@@ -62,13 +75,33 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+        try {
+            InputStream is = getClass().getResourceAsStream("/res/fonts/Jersey.ttf");
+            Jersey = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 40F);
+            is = getClass().getResourceAsStream("/res/fonts/arial.ttf");
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            System.exit(-99);
+        }
 
     }
     public void setupGame()  {
         aSetter.setObject();
         gameState = titleState;
-    }
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D)tempScreen.getGraphics();
 
+        setFullScreen();
+    }
+    public void setFullScreen() {
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        gd.setFullScreenWindow(Main.window);
+
+        screenWidth2 = Main.window.getWidth();
+        screenHeight2 = Main.window.getHeight();
+    }
     public void startnewGameThread() {
 
         gameThread = new Thread(this);
@@ -94,7 +127,8 @@ public class GamePanel extends JPanel implements Runnable {
 
             if(delta >= 1)  {
                 update();
-                repaint();
+                drawToTempScreen();
+                drawToScreen();
                 delta--;
                 drawCount++;
             }
@@ -125,11 +159,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
     }
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
+    public void drawToTempScreen() {
         // DEBUG
 
         long drawStart = 0;
@@ -172,13 +202,25 @@ public class GamePanel extends JPanel implements Runnable {
         long drawEnd = System.nanoTime();
         long passed = drawEnd - drawStart;
         g2.setColor(Color.white);
-        g2.drawString("Draw Time: " + passed, 10, 400);
-        System.out.println("Draw Time: " + passed);
+        g2.setFont(Jersey.deriveFont(Font.PLAIN, 40F));
+        g2.drawString("Draw Time: " + passed, 10, 25);
+        g2.drawString("FPS: " + FPS, 10, 50);
+        g2.drawString("Player X: " + player.worldX, 10, 75);
+        g2.drawString("Player Y: " + player.worldY, 10, 100);
+        g2.drawString("Player Speed: " + player.speed, 10, 125);
+        g2.drawString("Player Direction: " + player.direction, 10, 150);
+        g2.drawString("Health: " + player.health, 10, 175);
         }
 
 
-        g2.dispose();
     }
+    public void drawToScreen() {
+
+        Graphics g = getGraphics();
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+        g.dispose();
+    }
+    
 
     // Method to add an item to the inventory
     public void addToInventory(SuperObject item) {

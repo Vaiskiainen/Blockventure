@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, invEnterPressed = false;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
     // DEBUG
     public boolean debugMode = false;
 
@@ -97,6 +97,22 @@ public class KeyHandler implements KeyListener{
                 gp.gameState = gp.playState;
             }
         }
+        if(code == KeyEvent.VK_Q) {
+            if(gp.gameState == gp.playState) {
+                gp.player.interactWithHoldingItem();
+            }
+        }
+        if(code == KeyEvent.VK_F) {
+            if(gp.gameState != gp.titleState) {
+                if(gp.ui.holding != "none") {
+                    
+                gp.player.inventory.add(gp.ui.holding);
+                }
+                gp.ui.holding = "none";
+                
+            }
+        }
+        
         if(code == KeyEvent.VK_F3) {
             if(debugMode == false) {
                 debugMode = true;
@@ -148,13 +164,32 @@ public class KeyHandler implements KeyListener{
                     gp.ui.slotCol = 5;
                 }
             }
-            if(code == KeyEvent.VK_ENTER) {
-                invEnterPressed = true;
+            if(code == KeyEvent.VK_BACK_SPACE) {
+                if(gp.ui.slotCol + gp.ui.slotRow * 6 < gp.player.inventory.size()) {
+                    gp.player.inventory.remove(gp.ui.slotCol + gp.ui.slotRow * 6);
+                    System.out.println("Removed item at index: " + (gp.ui.slotCol + gp.ui.slotRow * 6));
+                } else {
+                    System.out.println("No item to remove at index: " + (gp.ui.slotCol + gp.ui.slotRow * 6));
+                }
             }
+            if(code == KeyEvent.VK_ENTER) {
+                gp.ui.enterPressed = true;
+            }
+                        
+                        
+
+
+                        
+
+                            
         
-        }
-    
+        
     }
+                    } 
+                
+        
+    
+    
 
     @Override
     public void keyReleased(KeyEvent e) {
