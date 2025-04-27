@@ -54,7 +54,6 @@ public class TileManager {
             setup(6, "redbricks", true);
             setup(7, "planks", false);
             setup(8, "bush", true);
-            setup(9, "berrybush", true);
 
 
     }

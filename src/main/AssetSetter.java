@@ -1,5 +1,8 @@
 package main;
 
+import object.OBJ_BerryBush;
+import object.OBJ_Chest;
+
 public class AssetSetter {
 
     GamePanel gp;
@@ -10,7 +13,13 @@ public class AssetSetter {
     
     public void setObject() {
 
-        
+        gp.obj[0] = new OBJ_Chest();
+        gp.obj[0].worldX = 10*gp.tileSize;
+        gp.obj[0].worldY = 10*gp.tileSize;
+
+        gp.obj[1] = new OBJ_BerryBush();
+        gp.obj[1].worldX = 11*gp.tileSize;
+        gp.obj[1].worldY = 10*gp.tileSize;
     }
 
 }

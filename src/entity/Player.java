@@ -12,6 +12,11 @@ import main.GamePanel;
 import main.KeyHandler;
 import main.UI;
 import main.UtilityTool;
+import object.OBJ_Door;
+import object.OBJ_Key;
+import object.OBJ_LootedChest;
+import object.OBJ_Bush;
+import object.OBJ_BerryBush;
 
 public class Player extends Entity {
     
@@ -27,12 +32,14 @@ public class Player extends Entity {
     public boolean enterPressed = false;
     public int health = 3;
     public int maxHealth = 6;
+    public boolean ePressed = false;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp); // Explicitly call the constructor of the Entity class
         this.gp = gp;
         this.keyH = keyH;
         this.ui = gp.ui;
+        Graphics2D g2;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -167,7 +174,20 @@ public class Player extends Entity {
     public void pickUpObject(int i) {
 
         if (i != 999) {
-
+            String objectName = gp.obj[i].name;
+            switch(objectName) {
+                case "Key":
+                    gp.obj[i] = null;
+                    inventory.add("Key");
+                case "Chest":
+                    lootChest(0,  i);
+                    System.out.println("Chest");
+                    break;
+                case "BerryBush":
+                    takeBerry(i); 
+                    System.out.println("BerryBush");
+                    break;
+            }
         }
     }
 
@@ -250,4 +270,27 @@ public class Player extends Entity {
             
         
     }
+    public void lootChest(int rarity, int objNum) {
+        if(ePressed) {
+        inventory.add("Key");
+        int x = gp.obj[objNum].worldX;
+        int y = gp.obj[objNum].worldY;
+        gp.obj[objNum] = null;
+        gp.obj[objNum] = new OBJ_LootedChest();
+        gp.obj[objNum].worldX = x;
+        gp.obj[objNum].worldY = y;
+    }
+}
+public void takeBerry(int objNum) {
+    if(ePressed) {
+    inventory.add("Berry");
+    int x = gp.obj[objNum].worldX;
+    int y = gp.obj[objNum].worldY;
+    gp.obj[objNum] = null;
+    gp.obj[objNum] = new OBJ_Bush();
+    gp.obj[objNum].worldX = x;
+    gp.obj[objNum].worldY = y;
+
+}
+}
 }

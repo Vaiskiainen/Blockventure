@@ -57,6 +57,9 @@ public class UI {
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
     }
+    public void drawChestItem(BufferedImage image, int chestX, int chestY) {
+        g2.drawImage(image, chestX, chestY, gp.tileSize, gp.tileSize, null);
+    }
 
     public void draw(Graphics2D g2) {
         // Assign the passed Graphics2D object to the class-level g2 variable

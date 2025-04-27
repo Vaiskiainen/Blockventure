@@ -4,27 +4,22 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import main.GamePanel;
 
 public class OBJ_Key extends SuperObject {
 
-    GamePanel gp;
-
-    public OBJ_Key(GamePanel gp) {
-
-        this.gp = gp;
+    public OBJ_Key() {
         
         name = "Key";
         try {
 
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/key.png"));
-            uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = ImageIO.read(getClass().getResourceAsStream("/res/items/key.png"));
             System.out.println("Loaded image: Key");
 
         }catch (IOException e) {
             e.printStackTrace();
-            System.exit(-99);
+            System.exit(0);
         }
+
             
     }
 }

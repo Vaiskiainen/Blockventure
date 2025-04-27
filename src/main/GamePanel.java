@@ -8,11 +8,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import entity.Player;
@@ -37,11 +37,6 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-
-    int screenWidth2 = screenWidth;
-    int screenHeight2 = screenHeight;
-    BufferedImage tempScreen;
-    Graphics2D g2;
 
     // FPS
     int FPS = 60;
@@ -69,45 +64,38 @@ public class GamePanel extends JPanel implements Runnable {
     // INVENTORY
     public ArrayList<SuperObject> inventory = new ArrayList<>();
 
-    public GamePanel()  {
+    // FULLSCREEN
+    private GraphicsDevice graphicsDevice;
+    private boolean isFullscreen = false;
+
+    public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+
+        // Get the default screen device for fullscreen mode
+        graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
         try {
             InputStream is = getClass().getResourceAsStream("/res/fonts/Jersey.ttf");
             Jersey = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 40F);
-            is = getClass().getResourceAsStream("/res/fonts/arial.ttf");
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             System.exit(-99);
         }
-
     }
-    public void setupGame()  {
+
+    public void setupGame() {
         aSetter.setObject();
         gameState = titleState;
-        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
-        g2 = (Graphics2D)tempScreen.getGraphics();
-
-        setFullScreen();
     }
-    public void setFullScreen() {
 
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        gd.setFullScreenWindow(Main.window);
-
-        screenWidth2 = Main.window.getWidth();
-        screenHeight2 = Main.window.getHeight();
-    }
     public void startnewGameThread() {
-
         gameThread = new Thread(this);
         gameThread.start();
     }
-
 
     public void run() {
         double drawInterval = 1000000000 / FPS;
@@ -118,68 +106,53 @@ public class GamePanel extends JPanel implements Runnable {
         int drawCount = 0;
 
         while (gameThread != null) {
-
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
 
-            if(delta >= 1)  {
+            if (delta >= 1) {
                 update();
-                drawToTempScreen();
-                drawToScreen();
+                repaint();
                 delta--;
                 drawCount++;
             }
 
             if (timer >= 1000000000) {
-                if(keyH.debugMode == true) {
-                    
-                System.out.println("FPS: " + drawCount);
-                drawCount = 0;
-                timer = 0;
+                if (keyH.debugMode == true) {
+                    System.out.println("FPS: " + drawCount);
+                    drawCount = 0;
+                    timer = 0;
                 }
             }
-            
-        }    
-
-        update();
-        repaint();
-    }
-    public void update() {
-
-        if(gameState == playState) {
-            player.update();
-
-            // Example interaction logic
         }
-        if(gameState == pauseState) {
+    }
+
+    public void update() {
+        if (gameState == playState) {
+            player.update();
+        }
+        if (gameState == pauseState) {
             // do nothing
         }
-
     }
-    public void drawToTempScreen() {
-        // DEBUG
 
-        long drawStart = 0;
-        if (keyH.debugMode == true) {
-            
-        drawStart = System.nanoTime();
-        }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
 
         // TITLE SCREEN
-
-        if(gameState == titleState) {
+        if (gameState == titleState) {
             ui.draw(g2);
-        }
-        else {
+        } else {
             // TILES
             tileM.draw(g2);
 
             // OBJECTS
-            for(int i = 0; i < obj.length; i++) {
-                if(obj[i] != null) {
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
                     obj[i].draw(g2, this);
                 }
             }
@@ -189,38 +162,21 @@ public class GamePanel extends JPanel implements Runnable {
 
             // UI
             ui.draw(g2);
-
-            // INVENTORY
-            drawInventory(g2);
         }
 
         // DEBUG
-
-        if(keyH.debugMode == true) {
-            
-
-        long drawEnd = System.nanoTime();
-        long passed = drawEnd - drawStart;
-        g2.setColor(Color.white);
-        g2.setFont(Jersey.deriveFont(Font.PLAIN, 40F));
-        g2.drawString("Draw Time: " + passed, 10, 25);
-        g2.drawString("FPS: " + FPS, 10, 50);
-        g2.drawString("Player X: " + player.worldX, 10, 75);
-        g2.drawString("Player Y: " + player.worldY, 10, 100);
-        g2.drawString("Player Speed: " + player.speed, 10, 125);
-        g2.drawString("Player Direction: " + player.direction, 10, 150);
-        g2.drawString("Health: " + player.health, 10, 175);
+        if (keyH.debugMode == true) {
+            g2.setColor(Color.white);
+            g2.setFont(Jersey.deriveFont(Font.PLAIN, 40F));
+            g2.drawString("Player X: " + player.worldX, 10, 75);
+            g2.drawString("Player Y: " + player.worldY, 10, 100);
+            g2.drawString("Player Speed: " + player.speed, 10, 125);
+            g2.drawString("Player Direction: " + player.direction, 10, 150);
+            g2.drawString("Health: " + player.health, 10, 175);
         }
 
-
+        g2.dispose();
     }
-    public void drawToScreen() {
-
-        Graphics g = getGraphics();
-        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
-        g.dispose();
-    }
-    
 
     // Method to add an item to the inventory
     public void addToInventory(SuperObject item) {
@@ -228,16 +184,20 @@ public class GamePanel extends JPanel implements Runnable {
         System.out.println(item.name + " added to inventory.");
     }
 
-    // Method to draw the inventory
-    public void drawInventory(Graphics2D g2) {
-        int x = 10; // Starting x position
-        int y = 10; // Starting y position
-        int tileSize = 48; // Size of each inventory slot
-
-        for (int i = 0; i < inventory.size(); i++) {
-            SuperObject item = inventory.get(i);
-            g2.drawImage(item.image, x, y, tileSize, tileSize, null);
-            x += tileSize + 10; // Move to the next slot
+    // Method to toggle fullscreen mode
+    public void toggleFullscreen(JFrame frame) {
+        if (!isFullscreen) {
+            frame.dispose(); // Dispose the frame to apply fullscreen settings
+            frame.setUndecorated(true); // Remove window borders
+            graphicsDevice.setFullScreenWindow(frame); // Set fullscreen mode
+            isFullscreen = true;
+        } else {
+            graphicsDevice.setFullScreenWindow(null); // Exit fullscreen mode
+            frame.dispose(); // Dispose the frame to reset settings
+            frame.setUndecorated(false); // Restore window borders
+            frame.setVisible(true); // Make the frame visible again
+            isFullscreen = false;
         }
     }
 }
+

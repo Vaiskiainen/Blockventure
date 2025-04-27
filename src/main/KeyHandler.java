@@ -90,7 +90,7 @@ public class KeyHandler implements KeyListener{
         if(code == KeyEvent.VK_D) {
             rightPressed = true;
         }
-        if(code == KeyEvent.VK_E) {
+        if(code == KeyEvent.VK_I) {
             if(gp.gameState == gp.playState) {
                 gp.gameState = gp.inventoryState;
             } else if(gp.gameState == gp.inventoryState) {
@@ -102,6 +102,10 @@ public class KeyHandler implements KeyListener{
                 gp.player.interactWithHoldingItem();
             }
         }
+        if(code == KeyEvent.VK_E) {
+            gp.player.ePressed = true;
+        }
+        
         if(code == KeyEvent.VK_F) {
             if(gp.gameState != gp.titleState) {
                 if(gp.ui.holding != "none") {
@@ -211,6 +215,10 @@ public class KeyHandler implements KeyListener{
         if(code == KeyEvent.VK_D) {
             rightPressed = false;
         }
+        if(code == KeyEvent.VK_E) {
+            gp.player.ePressed = false;
+        }
+
     }
 
 
