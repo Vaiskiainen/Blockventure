@@ -119,6 +119,9 @@ public class Player extends Entity {
         } else {
             speed = 4;
         }
+        if (health <= 0) {
+            gp.gameState = gp.gameOverState;
+        }
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
 
@@ -266,23 +269,31 @@ public class Player extends Entity {
             }else {
                 break;
             }
+        case "Sword":
+            if(health > 0) {
+                health -= 1;
+                break;
+            } else {
+                break;
+            }
         }
             
         
     }
     public void lootChest(int rarity, int objNum) {
-        if(ePressed) {
-        inventory.add("Key");
+        if(ui.holding == "Key") {
+        ui.holding = "none";
+        inventory.add("Paper_Roll");
         int x = gp.obj[objNum].worldX;
         int y = gp.obj[objNum].worldY;
         gp.obj[objNum] = null;
         gp.obj[objNum] = new OBJ_LootedChest();
         gp.obj[objNum].worldX = x;
         gp.obj[objNum].worldY = y;
-    }
+        }
+    
 }
 public void takeBerry(int objNum) {
-    if(ePressed) {
     inventory.add("Berry");
     int x = gp.obj[objNum].worldX;
     int y = gp.obj[objNum].worldY;
@@ -291,6 +302,6 @@ public void takeBerry(int objNum) {
     gp.obj[objNum].worldX = x;
     gp.obj[objNum].worldY = y;
 
-}
+
 }
 }

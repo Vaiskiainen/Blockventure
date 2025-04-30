@@ -53,8 +53,7 @@ public class TileManager {
             setup(5, "tree", true);
             setup(6, "redbricks", true);
             setup(7, "planks", false);
-            setup(8, "bush", true);
-
+            setup(8, "cobblestone", true);
 
     }
     public void setup(int tileID, String imageName, boolean collision) {

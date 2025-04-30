@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -15,10 +17,11 @@ public class UI {
 
     public boolean messageOn = false;
     public String message = "";
-    public BufferedImage inventoryImage;
+    public BufferedImage fullHealth, halfHealth, emptyHealth;
     int messageCounter = 0;
     public int commandNum = 0;
     public int pauseCommandNum = 0;
+    public int gameOverCommandNum = 1;
     public int slotCol = 0;
     public int slotRow = 0;
     public int itemIndex = 0;
@@ -42,10 +45,15 @@ public class UI {
             InputStream is = getClass().getResourceAsStream("/res/fonts/Jersey.ttf");
             Jersey = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 40F);
             is = getClass().getResourceAsStream("/res/fonts/arial.ttf");
+            fullHealth = ImageIO.read(getClass().getResourceAsStream("/res/guis/fullhealth.png"));
+            halfHealth = ImageIO.read(getClass().getResourceAsStream("/res/guis/halfhealth.png"));
+            emptyHealth = ImageIO.read(getClass().getResourceAsStream("/res/guis/emptyhealth.png"));
+            
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             System.exit(-99);
         }
+        
     }
 
     public void showMessage(String text) {
@@ -67,7 +75,7 @@ public class UI {
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 40F));
         g2.setColor(Color.white);
-
+        drawHealth();
         // TITLE STATE
         if (gp.gameState == gp.titleState) {
             drawTitleScreen();
@@ -196,6 +204,9 @@ public class UI {
         if (gp.gameState == gp.dialogueState) {
             drawDialogueScreen();
         }
+        if(gp.gameState == gp.gameOverState) {
+            drawGameOverScreen();
+        }
     }
 
     public void drawTitleScreen() {
@@ -245,7 +256,6 @@ public class UI {
         }
     }
 
-    
     public void drawPauseScreen() {
         
         g2.setFont(Jersey.deriveFont(Font.BOLD, 96F));
@@ -306,6 +316,85 @@ public class UI {
         int height = gp.tileSize * 3;
 
         drawSubWindow(x, y, width, height);
+    }
+    public void drawGameOverScreen() {
+
+        g2.setColor(new Color(102, 0, 19, 150));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        g2.setFont(Jersey.deriveFont(Font.BOLD, 96F));
+        String text = "GAME OVER";
+        int x = getXforCenteredText(text);
+        int y = gp.screenHeight / 2 - 50;
+
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 5, y + 5);
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+
+        text = "TITLE SCREEN";
+        g2.setFont(Jersey.deriveFont(Font.BOLD, 60F));
+        x = getXforCenteredText(text);
+        y = gp.screenHeight / 2 + 125;
+
+        g2.setColor(Color.black);
+        g2.drawString(text, x + 4, y + 4);
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+        if(gameOverCommandNum == 1) {
+            g2.setColor(Color.black);
+            g2.drawString(">", x - gp.tileSize +4, y +4);
+
+            g2.setColor(Color.white);
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+    }
+    public void drawHealth() {
+        switch (gp.player.health) {
+            case 0:
+                g2.drawImage(emptyHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+
+            case 1:
+                g2.drawImage(halfHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+
+            case 2:
+                g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+
+            case 3:
+                g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(halfHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+
+            case 4:
+                g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(fullHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+
+            case 5:
+                g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(fullHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(halfHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+
+            case 6:
+                g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(fullHealth, 85, 30, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(fullHealth, 135, 30, gp.tileSize, gp.tileSize, null);
+                break;
+        }
     }
     public void drawInventory() {
         // Draw the inventory window

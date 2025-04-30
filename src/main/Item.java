@@ -40,7 +40,7 @@ public class Item {
             return ImageIO.read(getClass().getResourceAsStream(path));
         } catch (IOException e) {
             e.printStackTrace();
-            return null; // Return null if the image fails to load
+            return null;
         }
     }
 }

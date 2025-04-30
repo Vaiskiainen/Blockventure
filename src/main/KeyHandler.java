@@ -70,6 +70,10 @@ public class KeyHandler implements KeyListener{
                         gp.gameState = gp.titleState;
                     }
                 }
+            }else if(gp.gameState == gp.gameOverState) {
+                if(code == KeyEvent.VK_ENTER) {
+                    gp.gameState = gp.titleState;
+                }
             }
 
 
