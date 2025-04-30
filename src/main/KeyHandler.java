@@ -72,7 +72,7 @@ public class KeyHandler implements KeyListener{
                 }
             }else if(gp.gameState == gp.gameOverState) {
                 if(code == KeyEvent.VK_ENTER) {
-                    gp.gameState = gp.titleState;
+                    gp.restartGame();
                 }
             }
 

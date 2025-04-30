@@ -32,6 +32,7 @@ public class Player extends Entity {
     public boolean enterPressed = false;
     public int health = 3;
     public int maxHealth = 6;
+    public int defaultHealth = 3;
     public boolean ePressed = false;
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -62,7 +63,7 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldY = gp.tileSize * 30;
         speed = 4;
         direction = "down";
     }

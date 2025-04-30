@@ -92,6 +92,21 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         gameState = titleState;
     }
+    public void restartGame() {
+        // Reset player state
+        player.setDefaultValues();
+        player.health = player.defaultHealth;
+    
+        // Reset game state
+        gameState = titleState;
+    
+        // Clear inventory or other game data if needed
+        player.inventory.clear();
+        ui.holding = "none";
+    
+        // Reinitialize objects or tiles if necessary
+        aSetter.setObject();
+    }
 
     public void startnewGameThread() {
         gameThread = new Thread(this);
