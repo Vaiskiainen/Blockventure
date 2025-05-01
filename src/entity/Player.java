@@ -142,7 +142,7 @@ public class Player extends Entity {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(-99);
+            System.exit(0);
         }
         return image;
     }
@@ -218,11 +218,9 @@ public class Player extends Entity {
                     inventory.add("Key");
                 case "Chest":
                     lootChest(0,  i);
-                    System.out.println("Chest");
                     break;
                 case "BerryBush":
                     takeBerry(i); 
-                    System.out.println("BerryBush");
                     break;
             }
         }
