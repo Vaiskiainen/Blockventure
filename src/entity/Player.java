@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -27,6 +28,9 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
     public ArrayList<String> inventory = new ArrayList<>();
+    public ArrayList<String> lootTable = new ArrayList<>();
+    
+    Random rand = new Random();
     public final int inventorySize = 24;
     public String holding;
     public boolean enterPressed = false;
@@ -66,22 +70,50 @@ public class Player extends Entity {
         worldY = gp.tileSize * 30;
         speed = 4;
         direction = "down";
+
+        lootTable.add("Key");
+        lootTable.add("Key");
+        lootTable.add("Key");
+        lootTable.add("Key");
+        lootTable.add("Boots");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Paper_Roll");
+        lootTable.add("Paper_Roll");
+        lootTable.add("Paper_Roll");
+        lootTable.add("Potion");
     }
     
     public void setItems() {
 
         inventory.add("Key");
-        inventory.add("Boots");
-        inventory.add("Berry");
-        inventory.add("Knife");
-        inventory.add("Pickaxe");
-        inventory.add("Paper_Roll");
-        inventory.add("Sword");
-        inventory.add("Carrots");
-        inventory.add("Axe");
-        inventory.add("Potion");
-        inventory.add("Water_Bottle");
-        inventory.add("lol");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        inventory.add("Key");
+        
         
     }
 
@@ -283,9 +315,11 @@ public class Player extends Entity {
         
     }
     public void lootChest(int rarity, int objNum) {
+        int randomElement = rand.nextInt(lootTable.size());
+        String loot = lootTable.get(randomElement);
         if(ui.holding == "Key") {
         ui.holding = "none";
-        inventory.add("Paper_Roll");
+        inventory.add(loot);
         int x = gp.obj[objNum].worldX;
         int y = gp.obj[objNum].worldY;
         gp.obj[objNum] = null;

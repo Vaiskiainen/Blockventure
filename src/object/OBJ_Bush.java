@@ -8,10 +8,8 @@ public class OBJ_Bush extends SuperObject{
 
     public OBJ_Bush() {
 
-        
         name = "Bush";
         try {
-
             image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/bush.png"));
             System.out.println("Loaded image: Bush");
 

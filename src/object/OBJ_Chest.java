@@ -7,11 +7,9 @@ import javax.imageio.ImageIO;
 public class OBJ_Chest extends SuperObject{
 
     public OBJ_Chest() {
-
-        
+  
         name = "Chest";
         try {
-
             image = ImageIO.read(getClass().getResourceAsStream("/res/objects/chest.png"));
             System.out.println("Loaded image: Chest");
 
@@ -21,5 +19,4 @@ public class OBJ_Chest extends SuperObject{
         }
         collision = true;
     }
-
 }
