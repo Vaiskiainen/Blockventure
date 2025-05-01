@@ -71,10 +71,6 @@ public class Player extends Entity {
         speed = 4;
         direction = "down";
 
-        lootTable.add("Key");
-        lootTable.add("Key");
-        lootTable.add("Key");
-        lootTable.add("Key");
         lootTable.add("Boots");
         lootTable.add("Berry");
         lootTable.add("Berry");
@@ -83,6 +79,18 @@ public class Player extends Entity {
         lootTable.add("Berry");
         lootTable.add("Berry");
         lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Berry");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
+        lootTable.add("Carrots");
         lootTable.add("Carrots");
         lootTable.add("Carrots");
         lootTable.add("Carrots");
@@ -95,26 +103,25 @@ public class Player extends Entity {
         lootTable.add("Sword");
         lootTable.add("Sword");
         lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Sword");
+        lootTable.add("Paper_Roll");
+        lootTable.add("Paper_Roll");
+        lootTable.add("Paper_Roll");
         lootTable.add("Paper_Roll");
         lootTable.add("Paper_Roll");
         lootTable.add("Paper_Roll");
         lootTable.add("Potion");
+        lootTable.add("Potion");
+        lootTable.add("Potion");
     }
     
     public void setItems() {
-
         inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        inventory.add("Key");
-        
-        
     }
 
     
@@ -276,7 +283,6 @@ public class Player extends Entity {
             if (health < maxHealth) {
                 health += 1;
                 ui.holding = "none";
-                inventory.remove("Berry");
                 break;
             }else {
                 break;
@@ -285,7 +291,6 @@ public class Player extends Entity {
             if (health < maxHealth) {
                 health += 2;
                 ui.holding = "none";
-                inventory.remove("Carrots");
                 break;
             }else {
                 break;
@@ -294,13 +299,20 @@ public class Player extends Entity {
             if (health < maxHealth) {
                 health = maxHealth;
                 ui.holding = "none";
-                inventory.remove("Potion");
                 break;
             }else {
                 break;
             }
         case "Sword":
             if(health > 0) {
+                health -= 1;
+                break;
+            } else {
+                break;
+            }
+        case "Raw_Berry":
+            if(health > 0) {
+                ui.holding = "none";
                 health -= 1;
                 break;
             } else {
@@ -326,6 +338,8 @@ public class Player extends Entity {
     
 }
 public void takeBerry(int objNum) {
+    int rawRandom = rand.nextInt(100);
+    if(rawRandom >= 10) {
     inventory.add("Berry");
     int x = gp.obj[objNum].worldX;
     int y = gp.obj[objNum].worldY;
@@ -333,7 +347,15 @@ public void takeBerry(int objNum) {
     gp.obj[objNum] = new OBJ_Bush();
     gp.obj[objNum].worldX = x;
     gp.obj[objNum].worldY = y;
-
+    } else {
+    inventory.add("Raw_Berry");
+    int x = gp.obj[objNum].worldX;
+    int y = gp.obj[objNum].worldY;
+    gp.obj[objNum] = null;
+    gp.obj[objNum] = new OBJ_Bush();
+    gp.obj[objNum].worldX = x;
+    gp.obj[objNum].worldY = y;
+    }
 
 }
 }

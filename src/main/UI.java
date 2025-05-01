@@ -140,6 +140,9 @@ public class UI {
                     case "Water_Bottle":
                         g2.drawImage(item.WaterBottle, x, y, gp.tileSize, gp.tileSize, null);
                         break;
+                    case "Raw_Berry":
+                        g2.drawImage(item.RawBerry, x, y, gp.tileSize, gp.tileSize, null);
+                        break;
                     default:      
                         g2.drawImage(item.MissingTexture, x, y, gp.tileSize, gp.tileSize, null);
                         break;          
@@ -426,6 +429,11 @@ public class UI {
                     break;
                 case "Water_Bottle":
                     g2.drawImage(item.WaterBottle, slotX, slotY, gp.tileSize, gp.tileSize, null);
+                    itemIndex++;
+                    slotX += gp.tileSize;
+                    break;
+                case "Raw_Berry":
+                    g2.drawImage(item.RawBerry, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;

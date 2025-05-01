@@ -9,7 +9,7 @@ public class Item {
 
     public BufferedImage Key, Boots, HoldSelected, Berry,
     Knife, Pickaxe, Paper_Roll, Sword, Axe, Carrots, Potion,
-    WaterBottle, MissingTexture;
+    WaterBottle, RawBerry, MissingTexture;
 
     public void getItemImage() {
         Key = loadImage("/res/items/key.png");
@@ -23,6 +23,7 @@ public class Item {
         Carrots = loadImage("/res/items/carrots.png");
         Potion = loadImage("/res/items/potion.png");
         WaterBottle = loadImage("/res/items/water_bottle.png");
+        RawBerry = loadImage("/res/items/rawberry.png");
 
         MissingTexture = loadImage("/res/items/missingtexture.png");
     }
