@@ -202,7 +202,7 @@ public class Player extends Entity {
             }
 
             // CHECK IF PLAYER IS OUT OF BOUNDS
-            if (worldX < 0 || worldY < 0  || worldX > gp.worldWidth - gp.tileSize || worldY > gp.worldHeight - gp.tileSize) {
+            if (worldX < 0 || worldY < 0  || worldX > gp.worldWidth - gp.tileSize || worldY > gp.worldHeight - 50) {
                 health = 0;
             }
         }

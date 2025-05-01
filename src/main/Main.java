@@ -9,7 +9,7 @@ public class Main {
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(true);
-        window.setTitle("Blockventure 0.1 InDev");
+        window.setTitle("Blockventure 0.0.3 InDev");
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
