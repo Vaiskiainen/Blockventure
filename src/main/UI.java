@@ -28,6 +28,8 @@ public class UI {
     public boolean enterPressed = false;
     public String holding = "none";
 
+    String dialogues[] = new String[20];
+
     Font Jersey;
 
     Graphics2D g2;
@@ -83,6 +85,16 @@ public class UI {
 
         // PLAY STATE
         if (gp.gameState == gp.playState) {
+
+        }
+        if (
+            gp.gameState != gp.gameOverState &&
+            gp.gameState != gp.dialogueState &&
+            gp.gameState != gp.titleState &&
+            gp.gameState != gp.pauseState
+            )
+            {
+
             Color c = new Color(0, 0, 0, 200);
             int x = 458;
             int y = 500;
@@ -112,31 +124,27 @@ public class UI {
                         break;
                     case "Paper_Roll":
                         g2.drawImage(item.Paper_Roll, x, y, gp.tileSize, gp.tileSize, null);
-                        break;    
+                        break;
                     case "Sword":
                         g2.drawImage(item.Sword, x, y, gp.tileSize, gp.tileSize, null);
                         break;
-    
                     case "Carrots":
                         g2.drawImage(item.Carrots, x, y, gp.tileSize, gp.tileSize, null);
                         break;
-    
                     case "Axe":
                         g2.drawImage(item.Axe, x, y, gp.tileSize, gp.tileSize, null);
                         break;
-    
                     case "Potion":
                         g2.drawImage(item.Potion, x, y, gp.tileSize, gp.tileSize, null);
                         break;
-    
                     case "Water_Bottle":
                         g2.drawImage(item.WaterBottle, x, y, gp.tileSize, gp.tileSize, null);
-                        break;            
+                        break;
+                    default:      
+                        g2.drawImage(item.MissingTexture, x, y, gp.tileSize, gp.tileSize, null);
+                        break;          
                 }
-                
-                }
-                
-    
+            }
         }
 
         // PAUSE STATE
@@ -147,57 +155,7 @@ public class UI {
         // INVENTORY STATE
         if (gp.gameState == gp.inventoryState) {
             drawInventory();
-            Color c = new Color(0, 0, 0, 200);
-            int x = 458;
-            int y = 500;
-            g2.setColor(c);
-            g2.fillRoundRect(456, 500, gp.tileSize, gp.tileSize, 15, 15);
-
-            // Draw the border
-            g2.setColor(Color.white);
-            g2.setStroke(new BasicStroke(5));
-            g2.drawRoundRect(456 + 2, 500 + 2, gp.tileSize, gp.tileSize, 15, 15);
-            if(holding != "none") {
-                switch(holding) {
-                    case "Key":
-                        g2.drawImage(item.Key, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Boots":
-                        g2.drawImage(item.Boots, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Berry":
-                        g2.drawImage(item.Berry, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Knife":
-                        g2.drawImage(item.Knife, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Pickaxe":
-                        g2.drawImage(item.Pickaxe, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Paper_Roll":
-                        g2.drawImage(item.Paper_Roll, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Sword":
-                        g2.drawImage(item.Sword, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-    
-                    case "Carrots":
-                        g2.drawImage(item.Carrots, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-    
-                    case "Axe":
-                        g2.drawImage(item.Axe, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-    
-                    case "Potion":
-                        g2.drawImage(item.Potion, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-    
-                    case "Water_Bottle":
-                        g2.drawImage(item.WaterBottle, x, y, gp.tileSize, gp.tileSize, null);
-                        break;                
-                }
-            }
+            
     
     }
         // DIALOGUE STATE
@@ -358,37 +316,31 @@ public class UI {
                 g2.drawImage(emptyHealth, 85, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
                 break;
-
             case 1:
                 g2.drawImage(halfHealth, 35, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 85, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
                 break;
-
             case 2:
                 g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 85, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
                 break;
-
             case 3:
                 g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(halfHealth, 85, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
                 break;
-
             case 4:
                 g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(fullHealth, 85, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(emptyHealth, 135, 30, gp.tileSize, gp.tileSize, null);
                 break;
-
             case 5:
                 g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(fullHealth, 85, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(halfHealth, 135, 30, gp.tileSize, gp.tileSize, null);
                 break;
-
             case 6:
                 g2.drawImage(fullHealth, 35, 30, gp.tileSize, gp.tileSize, null);
                 g2.drawImage(fullHealth, 85, 30, gp.tileSize, gp.tileSize, null);
@@ -408,24 +360,16 @@ public class UI {
 
         drawSubWindow(x, y, width, height);
 
-
-        // SLOT
         final int slotXStart = x + 20;
         final int slotYStart = y + 20;
         int slotX = slotXStart;
         int slotY = slotYStart + 30;
 
-        // CURSOR
         int cursorX = slotX + (slotCol * gp.tileSize);
         int cursorY = slotY + (slotRow * gp.tileSize);
         int cursorWidth = gp.tileSize;
         int cursorHeight = gp.tileSize;
        
-
-
-        // ITEMS
-
-
         while(gp.gameState == gp.inventoryState && itemIndex < gp.player.inventory.size()) {
         
             
@@ -435,73 +379,62 @@ public class UI {
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Boots":
                     g2.drawImage(item.Boots, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Berry":
                     g2.drawImage(item.Berry, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Knife":
                     g2.drawImage(item.Knife, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Pickaxe":
                     g2.drawImage(item.Pickaxe, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Paper_Roll":
                     g2.drawImage(item.Paper_Roll, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Sword":
                     g2.drawImage(item.Sword, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Carrots":
                     g2.drawImage(item.Carrots, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Axe":
                     g2.drawImage(item.Axe, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Potion":
                     g2.drawImage(item.Potion, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "Water_Bottle":
                     g2.drawImage(item.WaterBottle, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 case "none":
                     itemIndex++;
                     slotX += gp.tileSize;
                     break;
-
                 default:
+                    g2.drawImage(item.MissingTexture, slotX, slotY, gp.tileSize, gp.tileSize, null);
                     System.out.println("[DEBUG] No matching case for item: " + gp.player.inventory.get(itemIndex));
                     itemIndex++;
                     slotX += gp.tileSize;

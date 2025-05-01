@@ -35,7 +35,6 @@ public class TileManager {
 
     public void getTileImage() {
 
-
             // REGISTER TILES
             // If you are a modder, import your tile files into the /res/tiles folder
             // and register them here. "tileID" corresponds to the number in the map file.
@@ -68,6 +67,8 @@ public class TileManager {
             System.out.println("Loaded image: " + imageName);
 
         }catch(IOException e) {
+            System.out.println("ERROR while trying to load tile image:");
+            System.out.println("");
             e.printStackTrace();
         }
     }
@@ -112,7 +113,6 @@ public class TileManager {
         while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
             int tileNum = mapTileNum[worldCol][worldRow];
-
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -125,7 +125,6 @@ public class TileManager {
                 g2.drawImage(tile[tileNum].image, screenX, screenY, null);
             }
             worldCol++;
-
             if(worldCol == gp.maxWorldCol) {
                 worldCol = 0;
                 worldRow++;

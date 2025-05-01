@@ -7,23 +7,13 @@ import javax.imageio.ImageIO;
 
 public class Item {
 
-    public BufferedImage Key;
-    public BufferedImage Boots;
-    public BufferedImage HoldSelected;
-    public BufferedImage Berry;
-    public BufferedImage Knife;
-    public BufferedImage Pickaxe;
-    public BufferedImage Paper_Roll;
-    public BufferedImage Sword;
-    public BufferedImage Axe;
-    public BufferedImage Carrots;
-    public BufferedImage Potion;
-    public BufferedImage WaterBottle;
+    public BufferedImage Key, Boots, HoldSelected, Berry,
+    Knife, Pickaxe, Paper_Roll, Sword, Axe, Carrots, Potion,
+    WaterBottle, MissingTexture;
 
     public void getItemImage() {
         Key = loadImage("/res/items/key.png");
         Boots = loadImage("/res/items/boots_of_swiftness.png");
-        HoldSelected = loadImage("/res/items/selected.png");
         Berry = loadImage("/res/items/berry.png");
         Knife = loadImage("/res/items/knife.png");
         Pickaxe = loadImage("/res/items/pickaxe.png");
@@ -33,6 +23,8 @@ public class Item {
         Carrots = loadImage("/res/items/carrots.png");
         Potion = loadImage("/res/items/potion.png");
         WaterBottle = loadImage("/res/items/water_bottle.png");
+
+        MissingTexture = loadImage("/res/items/missingtexture.png");
     }
 
     private BufferedImage loadImage(String path) {

@@ -81,6 +81,7 @@ public class Player extends Entity {
         inventory.add("Axe");
         inventory.add("Potion");
         inventory.add("Water_Bottle");
+        inventory.add("lol");
         
     }
 
