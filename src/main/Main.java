@@ -3,7 +3,7 @@ package main;
 import javax.swing.JFrame;
 
 public class Main {
-    public static String gameVersion = "0.0.1 InDev";
+    public static String gameVersion = "0.0.5 InDev";
     public static JFrame window;
 
     public static void main(String[] args) {
