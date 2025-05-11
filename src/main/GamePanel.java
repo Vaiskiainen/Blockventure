@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // FPS
     int FPS = 60;
+    int drawCount = 0; // Declare drawCount as a class-level variable
 
     // SYSTEM
     TileManager tileM = new TileManager(this);
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
+    Main main = new Main();
     Thread gameThread;
 
     // ENTITY AND OBJECT
@@ -62,6 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int inventoryState = 4;
     public final int gameOverState = 5;
 
+
+    public int tick = 0;
     // INVENTORY
     public ArrayList<SuperObject> inventory = new ArrayList<>();
 
@@ -120,10 +124,10 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+        
 
         while (gameThread != null) {
             currentTime = System.nanoTime();
-
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
@@ -138,13 +142,14 @@ public class GamePanel extends JPanel implements Runnable {
             if (timer >= 1000000000) {
                 if (keyH.debugMode == true) {
                     System.out.println("FPS: " + drawCount);
-                    drawCount = 0;
-                    timer = 0;
                 }
+                drawCount = 0;
+                timer = 0;
+                if(gameState != titleState && gameState != pauseState)
+                tick++;
             }
         }
     }
-
     public void update() {
         if (gameState == playState) {
             player.update();
@@ -184,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.debugMode == true) {
             g2.setColor(Color.white);
             g2.setFont(Jersey.deriveFont(Font.PLAIN, 40F));
+            g2.drawString("Game Version: " + main.gameVersion, 10, 50);
             g2.drawString("Player X: " + player.worldX, 10, 75);
             g2.drawString("Player Y: " + player.worldY, 10, 100);
             g2.drawString("Player Speed: " + player.speed, 10, 125);
