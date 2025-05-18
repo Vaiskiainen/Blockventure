@@ -2,19 +2,22 @@ package main;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
-
 
 import java.awt.Font;
 import java.awt.FontFormatException;
 
 public class UI {
 
+    private Map<String, BufferedImage> itemImages = new HashMap<>();
     public boolean messageOn = false;
     public String message = "";
     public BufferedImage fullHealth, halfHealth, emptyHealth;
@@ -27,6 +30,7 @@ public class UI {
     public int itemIndex = 0;
     public boolean enterPressed = false;
     public String holding = "none";
+    public String description;
 
     String dialogues[] = new String[20];
 
@@ -39,9 +43,9 @@ public class UI {
     
     public UI(GamePanel gp) {
         this.gp = gp;
-        item.getItemImage();
-        
+        item.getItemImage(); // Load images and initialize descriptions
 
+        
         
         try {
             InputStream is = getClass().getResourceAsStream("/res/fonts/Jersey.ttf");
@@ -55,7 +59,22 @@ public class UI {
             e.printStackTrace();
             System.exit(-99);
         }
-        
+
+        // Initialize the item-image map
+        itemImages.put("Key", item.Key);
+        itemImages.put("Boots", item.Boots);
+        itemImages.put("Berry", item.Berry);
+        itemImages.put("Knife", item.Knife);
+        itemImages.put("Pickaxe", item.Pickaxe);
+        itemImages.put("Paper Roll", item.Paper_Roll);
+        itemImages.put("Sword", item.Sword);
+        itemImages.put("Carrots", item.Carrots);
+        itemImages.put("Axe", item.Axe);
+        itemImages.put("Potion", item.Potion);
+        itemImages.put("Water Bottle", item.Water_Bottle);
+        itemImages.put("Raw Berry", item.Raw_Berry);
+        itemImages.put("none", null); // For empty slots
+        itemImages.put("MissingTexture", item.MissingTexture);
     }
 
     public void showMessage(String text) {
@@ -105,48 +124,9 @@ public class UI {
             g2.setColor(Color.white);
             g2.setStroke(new BasicStroke(5));
             g2.drawRoundRect(456 + 2, 500 + 2, gp.tileSize, gp.tileSize, 15, 15);
-            if(holding != "none") {
-                switch(holding) {
-                    case "Key":
-                        g2.drawImage(item.Key, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Boots":
-                        g2.drawImage(item.Boots, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Berry":
-                        g2.drawImage(item.Berry, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Knife":
-                        g2.drawImage(item.Knife, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Pickaxe":
-                        g2.drawImage(item.Pickaxe, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Paper_Roll":
-                        g2.drawImage(item.Paper_Roll, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Sword":
-                        g2.drawImage(item.Sword, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Carrots":
-                        g2.drawImage(item.Carrots, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Axe":
-                        g2.drawImage(item.Axe, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Potion":
-                        g2.drawImage(item.Potion, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Water_Bottle":
-                        g2.drawImage(item.WaterBottle, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    case "Raw_Berry":
-                        g2.drawImage(item.RawBerry, x, y, gp.tileSize, gp.tileSize, null);
-                        break;
-                    default:      
-                        g2.drawImage(item.MissingTexture, x, y, gp.tileSize, gp.tileSize, null);
-                        break;          
-                }
+            if (holding != "none") {
+                BufferedImage image = itemImages.getOrDefault(holding, item.MissingTexture);
+                g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
             }
         }
 
@@ -362,6 +342,7 @@ public class UI {
         int height = gp.tileSize * 9;
 
         drawSubWindow(x, y, width, height);
+        drawSubWindow(20, gp.tileSize, 270, height);
 
         final int slotXStart = x + 20;
         final int slotYStart = y + 20;
@@ -373,99 +354,32 @@ public class UI {
         int cursorWidth = gp.tileSize;
         int cursorHeight = gp.tileSize;
        
-        while(gp.gameState == gp.inventoryState && itemIndex < gp.player.inventory.size()) {
-        
-            
-            switch (gp.player.inventory.get(itemIndex)) {
-                case "Key":
-                    g2.drawImage(item.Key, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Boots":
-                    g2.drawImage(item.Boots, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Berry":
-                    g2.drawImage(item.Berry, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Knife":
-                    g2.drawImage(item.Knife, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Pickaxe":
-                    g2.drawImage(item.Pickaxe, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Paper_Roll":
-                    g2.drawImage(item.Paper_Roll, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Sword":
-                    g2.drawImage(item.Sword, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Carrots":
-                    g2.drawImage(item.Carrots, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Axe":
-                    g2.drawImage(item.Axe, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Potion":
-                    g2.drawImage(item.Potion, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Water_Bottle":
-                    g2.drawImage(item.WaterBottle, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "Raw_Berry":
-                    g2.drawImage(item.RawBerry, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                case "none":
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-                default:
-                    g2.drawImage(item.MissingTexture, slotX, slotY, gp.tileSize, gp.tileSize, null);
-                    System.out.println("[DEBUG] No matching case for item: " + gp.player.inventory.get(itemIndex));
-                    itemIndex++;
-                    slotX += gp.tileSize;
-                    break;
-            }
-            
-            if(slotX >= slotXStart + (gp.tileSize * 6)) {
+        while (gp.gameState == gp.inventoryState && itemIndex < gp.player.inventory.size()) {
+            String itemName = gp.player.inventory.get(itemIndex);
+            BufferedImage image = itemImages.getOrDefault(itemName, item.MissingTexture);
+
+            g2.drawImage(image, slotX, slotY, gp.tileSize, gp.tileSize, null);
+            itemIndex++;
+            slotX += gp.tileSize;
+
+            if (slotX >= slotXStart + (gp.tileSize * 6)) {
                 slotX = slotXStart;
                 slotY += gp.tileSize;
             }
         }
         
-        if(enterPressed == true) {
-            if(slotCol + slotRow * 6 < gp.player.inventory.size()) {
-                if(holding != "none") {
+        if (enterPressed) {
+            int index = slotCol + slotRow * 6;
+            if (index < gp.player.inventory.size()) {
+                if (!holding.equals("none")) {
                     gp.player.inventory.add(holding);
                 }
-                holding = gp.player.inventory.get(slotCol + slotRow * 6);
-                gp.player.inventory.remove(slotCol + slotRow * 6);
-                
+                holding = gp.player.inventory.get(index);
+                gp.player.inventory.remove(index);
+
                 System.out.println("Holding item: " + holding);
             } else {
-                System.out.println("No item to hold at index: " + (slotCol + slotRow * 6));
+                System.out.println("No item to hold at index: " + index);
             }
             enterPressed = false;
         }
@@ -474,13 +388,26 @@ public class UI {
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
-        // Draw the player's inventory items
+        int itemNameY = 88;
+        int itemNameX = 37;
+        int descriptionY = 128;
+        int descriptionX = 37;
         g2.setFont(Jersey.deriveFont(Font.PLAIN, 40F));
         g2.setColor(Color.white);
         g2.drawString("Inventory", x + 20, y + 40);
+        if (slotCol + slotRow * 6 < gp.player.inventory.size()) {
+            g2.drawString(gp.player.inventory.get(slotCol + slotRow * 6), itemNameX, itemNameY);
+            g2.setFont(Jersey.deriveFont(Font.PLAIN, 30F));
+            description = item.getDescription(gp.player.inventory.get(slotCol + slotRow * 6));
+
+            // Wrap the description text
+            String[] wrappedText = wrapText(description, 250); // 250 is the max width for the description
+            int lineHeight = g2.getFontMetrics().getHeight();
+            for (int i = 0; i < wrappedText.length; i++) {
+                g2.drawString(wrappedText[i], descriptionX, descriptionY + (i * lineHeight));
+            }
+        }
     }
-
-
     
     public void drawSubWindow(int x, int y, int width, int height) {
         // Draw the window
@@ -499,4 +426,28 @@ public class UI {
         return x;
     }
 
+    private String[] wrapText(String text, int maxWidth) {
+        FontMetrics metrics = g2.getFontMetrics();
+        String[] manualLines = text.split("\n"); // Split text by manual line breaks
+        java.util.List<String> wrappedLines = new java.util.ArrayList<>();
+
+        for (String manualLine : manualLines) {
+            String[] words = manualLine.split(" ");
+            StringBuilder line = new StringBuilder();
+
+            for (String word : words) {
+                if (metrics.stringWidth(line + word) > maxWidth) {
+                    wrappedLines.add(line.toString());
+                    line = new StringBuilder(word + " ");
+                } else {
+                    line.append(word).append(" ");
+                }
+            }
+            if (!line.isEmpty()) {
+                wrappedLines.add(line.toString());
+            }
+        }
+
+        return wrappedLines.toArray(new String[0]);
+    }
 }

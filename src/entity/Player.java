@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -18,6 +19,7 @@ import object.OBJ_Key;
 import object.OBJ_LootedChest;
 import object.OBJ_Bush;
 import object.OBJ_BerryBush;
+import object.OBJ_Chest;
 
 public class Player extends Entity {
     
@@ -109,18 +111,19 @@ public class Player extends Entity {
         lootTable.add("Sword");
         lootTable.add("Sword");
         lootTable.add("Sword");
-        lootTable.add("Paper_Roll");
-        lootTable.add("Paper_Roll");
-        lootTable.add("Paper_Roll");
-        lootTable.add("Paper_Roll");
-        lootTable.add("Paper_Roll");
-        lootTable.add("Paper_Roll");
+        lootTable.add("Paper Roll");
+        lootTable.add("Paper Roll");
+        lootTable.add("Paper Roll");
+        lootTable.add("Paper Roll");
+        lootTable.add("Paper Roll");
+        lootTable.add("Paper Roll");
         lootTable.add("Potion");
         lootTable.add("Potion");
         lootTable.add("Potion");
     }
     
     public void setItems() {
+        inventory.add("Key");
         inventory.add("Key");
     }
 
@@ -222,7 +225,8 @@ public class Player extends Entity {
                     gp.obj[i] = null;
                     inventory.add("Key");
                 case "Chest":
-                    lootChest(0,  i);
+                    lootChest((OBJ_Chest) gp.obj[i]);
+                    openChest(i);
                     break;
                 case "BerryBush":
                     takeBerry(i); 
@@ -322,12 +326,9 @@ public class Player extends Entity {
             
         
     }
-    public void lootChest(int rarity, int objNum) {
-        int randomElement = rand.nextInt(lootTable.size());
-        String loot = lootTable.get(randomElement);
+    public void openChest(int objNum) {
         if(ui.holding == "Key") {
         ui.holding = "none";
-        inventory.add(loot);
         int x = gp.obj[objNum].worldX;
         int y = gp.obj[objNum].worldY;
         gp.obj[objNum] = null;
@@ -335,6 +336,7 @@ public class Player extends Entity {
         gp.obj[objNum].worldX = x;
         gp.obj[objNum].worldY = y;
         }
+
     
 }
 public void takeBerry(int objNum) {
@@ -348,7 +350,7 @@ public void takeBerry(int objNum) {
     gp.obj[objNum].worldX = x;
     gp.obj[objNum].worldY = y;
     } else {
-    inventory.add("Raw_Berry");
+    inventory.add("Raw Berry");
     int x = gp.obj[objNum].worldX;
     int y = gp.obj[objNum].worldY;
     gp.obj[objNum] = null;
@@ -357,5 +359,19 @@ public void takeBerry(int objNum) {
     gp.obj[objNum].worldY = y;
     }
 
+}
+
+public void lootChest(OBJ_Chest chest) {
+    if(ui.holding == "Key") {
+        
+    List<String> lootTable = List.of( "Boots",
+    "Berry", "Berry", "Berry", "Berry", "Berry",
+    "Potion",
+    "Axe", "Axe",
+    "Sword", "Sword", "Sword", "Sword", "Sword");;
+    String item = chest.openChest(lootTable);
+    System.out.println("You received: " + item);
+    gp.player.inventory.add(item);
+    }
 }
 }

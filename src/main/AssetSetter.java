@@ -13,13 +13,19 @@ public class AssetSetter {
     
     public void setObject() {
 
+        // Chest 1: Random loot
         gp.obj[0] = new OBJ_Chest();
-        gp.obj[0].worldX = 11*gp.tileSize;
-        gp.obj[0].worldY = 32*gp.tileSize;
+        gp.obj[0].worldX = 11 * gp.tileSize;
+        gp.obj[0].worldY = 32 * gp.tileSize;
+        ((OBJ_Chest) gp.obj[0]).isRandomLoot = true; // Use random loot
+        ((OBJ_Chest) gp.obj[0]).specificItem = "Sword"; // Specific item to give
 
-        gp.obj[1] = new OBJ_BerryBush();
-        gp.obj[1].worldX = 22*gp.tileSize;
-        gp.obj[1].worldY = 29*gp.tileSize;
+        // Chest 2: Always gives a specific item
+        gp.obj[1] = new OBJ_Chest();
+        gp.obj[1].worldX = 22 * gp.tileSize;
+        gp.obj[1].worldY = 29 * gp.tileSize;
+        ((OBJ_Chest) gp.obj[1]).isRandomLoot = false; // Always give a specific item
+        ((OBJ_Chest) gp.obj[1]).specificItem = "Sword"; // Specific item to give
 
         gp.obj[2] = new OBJ_BerryBush();
         gp.obj[2].worldX = 2*gp.tileSize;
